@@ -15,6 +15,6 @@ import { PredictComponent } from './predict/predict.component';
     HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [PredictComponent]
 })
 export class AppModule { }
