@@ -6,7 +6,7 @@ import { createPrompt, TextRequest, TextResponse } from '../models/vertex-ai';
 @Component({
   selector: 'app-root',
   templateUrl: './predict.component.html',
-  styleUrls: ['./predict.component.scss']
+  styleUrls: ['./predict.component.css']
 })
 export class PredictComponent implements OnInit {
   title = 'vertex-ai-palm2-angular';
