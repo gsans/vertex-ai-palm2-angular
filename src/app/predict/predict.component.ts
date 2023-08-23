@@ -25,7 +25,7 @@ export class PredictComponent implements OnInit {
   TestVertexAIWithApiKey() {
     const API_KEY = '<YOUR_API_KEY>';
 
-    this.buildEndpointUrl(API_KEY);
+    this.buildEndpointUrlApiKey(API_KEY);
 
     this.http.post<TextResponse>(this.endpoint, this.prompt)
       .subscribe(response => {
