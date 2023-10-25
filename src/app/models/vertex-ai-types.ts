@@ -7,7 +7,7 @@ export function createPrompt(
   topP: number = 0.70,
   topK: number = 40
 ): TextRequest {
-  const request: TextRequest = {
+  const request : TextRequest = {
     "instances": [
       {
         "prompt": `${prompt}`
@@ -21,7 +21,7 @@ export function createPrompt(
     }
   }
   return request;
-}
+}  
 
 // Text API
 export interface TextRequest {
@@ -43,69 +43,6 @@ export interface TextPrediction {
   citationMetadata: CitationMetadata;
   safetyAttributes: SafetyAttributes;
 }
-
-
-// Chat API
-export interface ChatRequest {
-  instances: ChatInstance[];
-  parameters: Parameters;
-}
-
-export interface ChatInstance {
-  prompt: string;
-}
-
-export interface ChatResponse {
-  predictions: ChatPrediction[];
-  metadata: Metadata;
-}
-
-export interface ChatPrediction {
-  candidates: Candidate[];
-  citationMetadata: CitationMetadata;
-  safetyAttributes: SafetyAttributes;
-}
-
-
-// Code API  
-export interface CodeRequest {
-  instances: CodeInstance[];
-  parameters: Parameters;
-}
-
-export interface CodeInstance {
-  prompt: string;
-}
-
-export interface CodeResponse {
-  predictions: CodePrediction[];
-  metadata: Metadata;
-}
-
-export interface CodePrediction {
-  candidates: Candidate[];
-  citationMetadata: CitationMetadata;
-  safetyAttributes: SafetyAttributes;
-}
-
-
-// Imagen API
-export interface ImagenRequest {
-  instances: ImagenInstance[];
-}
-
-export interface ImagenInstance {
-  prompt: string;
-}
-
-export interface ImagenResponse {
-  predictions: string[];
-  deployedModelId?: string;
-  model?: string;
-  modelDisplayName?: string;
-  modelVersionId?: string;
-}
-
 
 // Shared types
 export interface Parameters {

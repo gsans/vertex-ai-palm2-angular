@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
-import { createPrompt, TextRequest, TextResponse } from '../models/vertex-ai';
+import * as vertex from '../models/vertex-ai-types';
+import * as palm from '../models/palm-types';
 
 @Component({
   selector: 'app-root',
@@ -10,40 +11,31 @@ import { createPrompt, TextRequest, TextResponse } from '../models/vertex-ai';
 })
 export class PredictComponent implements OnInit {
   title = 'vertex-ai-palm2-angular';
-  endpoint: string = "";
-  headers: HttpHeaders | undefined;
-  prompt: TextRequest = createPrompt("What is the largest number with a name?");
 
   constructor(public http: HttpClient) {
   }
 
   ngOnInit(): void {
-    //this.TestVertexAIWithApiKey();
-    this.TestVertexAIWithoutApiKey();
+    this.TestPalmWithApiKey();
+    //this.TestVertexAIWithoutApiKey();
   }
 
-  TestVertexAIWithApiKey() {
-    const API_KEY = '<YOUR_API_KEY>';
+  TestPalmWithApiKey() {
+    const prompt: palm.TextRequest = palm.createPrompt("What is the largest number with a name?");
+    const endpoint = this.buildEndpointUrlApiKey(environment.API_KEY);
 
-    this.buildEndpointUrlApiKey(API_KEY);
-
-    this.http.post<TextResponse>(this.endpoint, this.prompt)
+    this.http.post<palm.TextResponse>(endpoint, prompt)
       .subscribe(response => {
-        console.log(response.predictions[0].content);
+        console.log(response.candidates?.[0].output);
       });
   }
 
   TestVertexAIWithoutApiKey() {
-    // const PROJECT_ID = '<YOUR_PROJECT_ID>';
-    // const GCLOUD_AUTH_PRINT_ACCESS_TOKEN = '<YOUR_GCLOUD_AUTH_PRINT_ACCESS_TOKEN>';
+    const prompt: vertex.TextRequest = vertex.createPrompt("What is the largest number with a name?");
+    const endpoint = this.buildEndpointUrl(environment.PROJECT_ID);
+    let headers = this.getAuthHeaders(environment.GCLOUD_AUTH_PRINT_ACCESS_TOKEN);
 
-    const PROJECT_ID = environment.PROJECT_ID;
-    const GCLOUD_AUTH_PRINT_ACCESS_TOKEN = environment.GCLOUD_AUTH_PRINT_ACCESS_TOKEN;
-
-    this.buildEndpointUrl(PROJECT_ID);
-    this.getAuthHeaders(GCLOUD_AUTH_PRINT_ACCESS_TOKEN);
-
-    this.http.post<TextResponse>(this.endpoint, this.prompt, { headers: this.headers })
+    this.http.post<vertex.TextResponse>(endpoint, prompt, { headers })
       .subscribe(response => {
         console.log(response.predictions[0].content);
       });
@@ -62,7 +54,7 @@ export class PredictComponent implements OnInit {
     url += "/models/" + MODEL;       // model
     url += ":predict";               // action
 
-    this.endpoint = url;
+    return url;
   }
 
   buildEndpointUrlApiKey(apikey: string) {
@@ -76,12 +68,13 @@ export class PredictComponent implements OnInit {
     url += ":generateText";          // action
     url += "?key=" + apikey;         // api key
 
-    this.endpoint = url;
+    return url;
   }
 
   getAuthHeaders(accessToken: string) {
-    this.headers = new HttpHeaders()
+    const headers = new HttpHeaders()
       .set('Authorization', `Bearer ${accessToken}`);
+    return headers;
   }
 
 }
