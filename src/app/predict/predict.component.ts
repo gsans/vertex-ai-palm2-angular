@@ -59,7 +59,7 @@ export class PredictComponent implements OnInit {
 
   buildEndpointUrlApiKey(apikey: string) {
     const BASE_URL = "https://generativelanguage.googleapis.com/";
-    const API_VERSION = 'v1beta2';   // may be different at this time Eg: v1, v2, etc
+    const API_VERSION = 'v1beta3';   // may be different at this time Eg: v1, v2, etc
     const MODEL = 'text-bison-001';  // may be different at this time
 
     let url = BASE_URL;              // base url
